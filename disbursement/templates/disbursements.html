@@ -57,9 +57,9 @@
                             <td>{{transfer.recipient.details.account_number}} {{transfer.recipient.details.bank_name}}</td>
                             <td><div class="badge badge-pill badge-border border-success success">{{transfer.recipient.type}}</div>{{transfer.recipient.description}}</td>
                             <td>{{the_date|date:"N j, Y"}}</td>
-                            <td><button type="button" class="btn btn-outline-success block btn-sm" data-toggle="modal" data-target="#disbursementForm">View Details</button></td>
+                            <td><button type="button" class="btn btn-outline-success block btn-sm" data-toggle="modal" data-target="#{{transfer.id}}">View Details</button></td>
                             <!-- Modal -->
-                            <div class="modal fade text-left" id="disbursementForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
+                            <div class="modal fade text-left" id="{{transfer.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
                               aria-hidden="true">
                               <div class="modal-dialog modal-sm" role="document">
                                 <div class="modal-content">

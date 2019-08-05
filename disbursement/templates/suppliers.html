@@ -65,9 +65,9 @@
                               {% endif%}
                             </td>
                             <td><small class="font-small-3">{{the_date|date:"N j, Y"}}</small></td>
-                            <td><div is="0" class="btn-group btn-group-sm" tabindex="0"><a href="#" class="text-muted" data-toggle="modal" data-target="#inlineForm"><i class="fa fa-pencil"></i></a><a href="{% url 'delete_supplier' supplier.id %}"class="text-danger"style="margin-left: 10px;"> <i class="fa fa-trash"></i></a></div></td>
+                            <td><div is="0" class="btn-group btn-group-sm" tabindex="0"><a href="#" class="text-muted" data-toggle="modal" data-target="#{{supplier.id}}"><i class="fa fa-pencil"></i></a><a href="{% url 'delete_supplier' supplier.id %}"class="text-danger"style="margin-left: 10px;"> <i class="fa fa-trash"></i></a></div></td>
                             <!-- Modal -->
-                            <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
+                            <div class="modal fade text-left" id="{{supplier.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
                             aria-hidden="true">
                               <div class="modal-dialog modal-s" role="document">
                                 <div class="modal-content">
