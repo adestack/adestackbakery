@@ -28,7 +28,7 @@ def balance(request):
 
 	return render(request, 'balance.html', context)
 	
-	
+
 def disbursements(request):
 
         # List Transfer
@@ -92,9 +92,49 @@ def single_disbursement(request):
                 return render(request,'single_disbursement.html',context)
 
 def bulk_disbursements(request):
-	context = {}
-	return render(request,'bulk_disbursements.html',context)
 
+        print("I got here 1")
+
+        if request.method == 'POST':
+                amount = int(request.POST['amount'])
+                recipient = str(request.POST['recipient']).strip()
+                reason = request.POST['reason']
+                print("I got here 2")
+
+                # Initiate Transfer
+                trans_obj = Transfers()
+                res = trans_obj.initate_transfer(amount,reason,recipient)
+                print(res.json()["message"])
+                return redirect('disbursements')
+
+        print("I got here 3")
+
+        #List recipients
+        recipient_obj = Recipients()
+        res = recipient_obj.list_recipients()
+        print("I got here 4")
+
+        status = recipient_obj.get_request_status(res)
+        # Check if the status of the balance enquiry call is true
+        
+        print("I got here 5")
+
+        if not status[0]:
+                messages.success(request, ("Error Fetchingy Recipient Details!"))
+
+                print("I got here 6")
+        else:
+                supplier_dic = {}
+                for supplier in res.json()["data"]:
+                        supplier_dic.update( {supplier["recipient_code"]:supplier["name"]} )
+
+                        print("I got here 7")
+                context = {"suppliers":supplier_dic}
+
+                print("I got here 8")
+                return render(request,'bulk_disbursements.html',context)
+
+                
 def suppliers(request):
 
 	#List recipients
