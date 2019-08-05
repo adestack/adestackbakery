@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <div class="app-content content">
+    <div class="content-wrapper">
+      <div class="content-header row">
+        <div class="content-header-left col-md-6 col-12 mb-2">
+          <h3 class="content-header-title mb-0">Add Supplier</h3>
+          <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item active"><a href="#">Add Supplier</a>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content-body">
+        <!-- Basic form layout section start -->
+        <section id="basic-form-layouts">
+          <div class="row justify-content-md-center">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title" id="basic-layout-card-center">Add Supplier Form</h4>
+                  <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                  <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+                      <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                      <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                      <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                      <li><a data-action="close"><i class="ft-x"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="card-content collapse show">
+                  <div class="card-body">
+                    <div class="card-text">
+                      <p>This example shows a ways to center your card with form. </p>
+                    </div>
+                    <form class="form" method="POST" action="{% url 'add_supplier' %}">
+                      {% csrf_token %}
+                      <div class="form-body">
+                        <div class="form-group">
+                          <label for="eventRegInput1">Full Name</label>
+                          <input type="text" id="eventRegInput1" class="form-control" placeholder="fullname" name="name">
+                        </div>
+                        <div class="form-group">
+                          <label for="eventRegInput2">Account Number</label>
+                          <input type="text" id="eventRegInput2" class="form-control" placeholder="account number" name="account_number">
+                        </div>
+                        <div class="form-group">
+                          <label for="eventRegInput3">Bank Name</label>
+                          <select class="select2-theme form-control" id="select2-theme" name="bank_code">   
+                            {% for bank in content %}
+                                <option value="{{bank.code}}">{{bank.name}}</option>
+                            {% endfor %}
+                            }
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="eventRegInput4">Description</label>
+                          <input type="text" id="eventRegInput4" class="form-control" placeholder="description" name="description">
+                        </div>
+                      </div>
+                      <div class="form-actions center">
+                        <button type="submit" class="btn btn-primary">
+                          <i class="fa fa-check-square-o"></i> Add Supplier
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- // Basic form layout section end -->
+      </div>
+    </div>
+  </div>
+{% endblock content %}

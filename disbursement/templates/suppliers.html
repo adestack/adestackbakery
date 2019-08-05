@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <div class="app-content content">
+    <div class="content-wrapper">
+      <div class="content-header row">
+        <div class="content-header-left col-md-6 col-12 mb-2">
+          <h3 class="content-header-title mb-0">Suppliers</h3>
+          <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item active">Suppliers
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content-body">
+        <!-- Contextual classes start -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Contextual classes</h4>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                <div class="heading-elements">
+                  <ul class="list-inline mb-0">
+                    <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                    <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                    <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                    <li><a data-action="close"><i class="ft-x"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card-content collapse show">
+                <div class="card-body">
+                  <p>Use contextual classes to color table rows or individual cells.</p>
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th><i class="fa fa-lightbulb-o fa-lg"></i></th>
+                          <th>Name</th>
+                          <th>Recipient Code </th>
+                          <th>Account</th>
+                          <th>Email</th>
+                          <th>Added On</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for supplier in content %}
+                          <tr>
+                            <td>{% if supplier.active == True %}<i class="fa fa-circle success"></i>{% else %}<i class="fa fa-circle danger"></i>{% endif%}</td>                            <td><small class="font-small-3">{{supplier.name}}</small></td>
+                            <td><small class="font-small-3">{{supplier.recipient_code}}</small></td>
+                            <td><div class="badge badge-pill badge-border border-success success font-small-3">{{supplier.type}}</div><small class="font-small-3">{{supplier.details.account_number}} {{supplier.details.bank_name}}</small></td>
+                            <td>
+                              {% if supplier.email == None %}
+                                -
+                              {% else %}
+                                <small class="font-small-3">{{supplier.email}}</small>
+                              {% endif%}
+                            </td>
+                            <td><small class="font-small-3">{{the_date|date:"N j, Y"}}</small></td>
+                            <td><div is="0" class="btn-group btn-group-sm" tabindex="0"><a href="#" class="text-muted" data-toggle="modal" data-target="#inlineForm"><i class="fa fa-pencil"></i></a><a href="{% url 'delete_supplier' supplier.id %}"class="text-danger"style="margin-left: 10px;"> <i class="fa fa-trash"></i></a></div></td>
+                            <!-- Modal -->
+                            <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
+                            aria-hidden="true">
+                              <div class="modal-dialog modal-s" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title center" id="myModalLabel19">Update Recipient</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <form class="form" method="POST" action="{% url 'edit_supplier' supplier.id  %}">
+                                  {% csrf_token %}
+                                    <div class="modal-body" style="padding: 2rem;">
+                                      <label>Email Address: </label>
+                                      <div class="form-group">
+                                        <input type="email" placeholder="{% if supplier.email != None %}{{ supplier.email }}{% else %}Email Address{% endif %}" class="form-control" name="email">
+                                      </div>
+                                      <label>Recipient Name: </label>
+                                      <div class="form-group">
+                                        <input type="text" placeholder="{% if supplier.name != None %}{{ supplier.name }}{% else %}Recipient Name{% endif %}" class="form-control" name="name">
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <input type="reset" class="btn btn-outline-secondary btn-sm" data-dismiss="modal"
+                                      value="close">
+                                      <input type="submit" class="btn btn-outline-primary btn-sm" value="Update Supplier">
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Contextual classes end -->
+      </div>
+    </div>
+  </div>
+{% endblock content %}

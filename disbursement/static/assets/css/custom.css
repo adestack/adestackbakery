@@ -1,0 +1,57 @@
+.main-menu.menu-dark .navigation {
+    background: #0f264f;
+}
+
+.main-menu.menu-dark {
+    color: #fff;
+    background: #0f264f;
+}
+
+.navbar-semi-dark .navbar-header {
+    background: #041024;
+}
+
+html body.blank-page {
+    background-color: #0f264f;
+ }
+
+ .dot {
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    border-style: solid;
+    border-width: 4px;
+    border-radius: 100%;
+}
+
+.modal-header {
+    border-bottom: 1px solid #e3ebf3;
+}
+
+.modal-footer {
+    border-top: 1px solid #e3ebf3;
+}
+
+.wrapper {
+    padding: 15px;
+}
+
+td h5 {
+    margin-bottom: 0px;
+}
+
+.table th, .table td {
+    padding: 0.75rem 1rem;
+}
+
+.list-group .col-md-7 {
+    float: right;
+}
+
+.list-group .col-md-5 {
+    float: left;
+}
+
+.list-group-item {
+    padding: 10px 15px;
+}

@@ -1,0 +1,1 @@
+This Django AdestackBakery app was created for the purpose of a Code Challenge. It is a simple web app that can handle an imaginary AdestackBakery finance lead with her disbursements.

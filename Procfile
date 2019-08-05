@@ -1,0 +1,1 @@
+web: gunicorn adestackbakery.wsgi --log-file -
