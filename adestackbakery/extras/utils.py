@@ -50,8 +50,8 @@ class Utils(Base):
                 "account_number": account_number,
                 "bank_code": bank_code,
             }
-        
+        print(req_data)
         response = requests.get("https://api.paystack.co/bank/resolve", data = self.build_request(req_data), headers = self.headers)
         #response = requests.get("{}/resolve".format(self.endpoint), data = self.build_request(req_data), headers = self.headers)
-        #print(response)
+        print(response)
         return response

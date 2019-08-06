@@ -4,12 +4,16 @@ from adestackbakery.extras.recipients import Recipients
 from adestackbakery.extras.transfers import Transfers
 from django.utils.dateparse import parse_datetime
 from django.contrib import messages
+from django.http import HttpResponse
+import json
 
 #save 9:46#
 # Create your views here.
 
+
+# List Transfer
 def index(request):
-	return render(request, 'index.html', {})
+	return render(request,'index.html',{})
 
 def balance(request):
 
@@ -28,7 +32,6 @@ def balance(request):
 
 	return render(request, 'balance.html', context)
 	
-
 def disbursements(request):
 
         # List Transfer
@@ -47,7 +50,6 @@ def disbursements(request):
                 print(context)
                 return render(request,'disbursements.html',context)
         
-
 def single_disbursement(request):
 
         print("I got here 1")
@@ -134,7 +136,6 @@ def bulk_disbursements(request):
                 print("I got here 8")
                 return render(request,'bulk_disbursements.html',context)
 
-                
 def suppliers(request):
 
 	#List recipients
@@ -154,19 +155,41 @@ def suppliers(request):
 		
 	return render(request,'suppliers.html',context)
 
+def add_supplier_ajax(request):
+	if request.method == 'POST':
+		name = request.POST['name']
+		account_number = request.POST.get('account_number')
+		bank_code = request.POST.get('bank_code')
+		description = request.POST.get('description')
+		# Create Recipients
+		recipient_obj = Recipients()
+		req = recipient_obj.create_recipient(name,account_number,bank_code,description)
+
+		status = recipient_obj.get_request_status(req)
+
+		if not status[0]:
+			return HttpResponse(
+				json.dumps({"error": "There was an error adding the supplier"}),
+				content_type="application/json"
+				)
+		else:
+			response_data = {}
+			response_data['status'] = 'success'
+			response_data['success'] = 'Supplier has been successfully added!'
+
+			return HttpResponse(
+				json.dumps(response_data),
+				content_type="application/json"
+				)
+	else:
+		return HttpResponse(
+			json.dumps({"status":"fail","error": "A supplier can only be added from the Add Supplier page"}),
+			content_type="application/json"
+			)
+
+
 def add_supplier(request):
-        if request.method == 'POST':
-                name = request.POST['name']
-                account_number = request.POST['account_number']
-                bank_code = request.POST['bank_code']
-                description = request.POST['description']
-
-        # Create Recipients
-                recipient_obj = Recipients()
-                req = recipient_obj.create_recipient(name,account_number,bank_code,description)
-
-                return redirect('suppliers')
-        
+	
         # Fetch Banks
         util_obj = Utils()
         res = util_obj.fetch_banks()
@@ -180,7 +203,6 @@ def add_supplier(request):
                 return render(request,'add_supplier.html',context)
 
         
-
 def edit_supplier(request, id):
         if request.method == 'POST':
                 

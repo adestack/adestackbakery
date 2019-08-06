@@ -180,8 +180,7 @@ $(document).ready(function(){
 		        swal("Cancelled", "It's safe.", "error");
 		    }
 		});
-	});
-
+	});	
 	$('#confirm-color').on('click',function(){
 		swal({
 		    title: "Are you sure?",
