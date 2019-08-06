@@ -127,7 +127,7 @@ def single_disbursement_ajax(request):
 		reason = str(request.POST.get('reason'))
 
 		#format_amount = "{:.0f}".format(float(amount*100))
-		format_amount = "{:.0f}".format(float(amount)*100)
+		format_amount = "{:.0f}".format(float(amount))
 		format_amount = int(format_amount)
 
 		print(format_amount)
