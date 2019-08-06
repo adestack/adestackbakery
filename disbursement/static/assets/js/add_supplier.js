@@ -57,6 +57,13 @@ $(document).ready(function(){
                                 window.location.href = return_url;
                                 console.log('The Ok Button was clicked.');
                               });
+                      },
+
+                      // handle a non-successful response
+                      error : function(xhr,errmsg,err) {
+
+                          swal("Error!", xhr.status + ": " + xhr.responseText, "error")
+                          
                       }
                   });
 

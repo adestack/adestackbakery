@@ -5,14 +5,13 @@ from adestackbakery.extras.transfers import Transfers
 from django.utils.dateparse import parse_datetime
 from django.contrib import messages
 from django.http import HttpResponse
-from adestackbakery.extras.preloader import Preloader
 import json
 
 #save 9:46#
 # Create your views here.
 
 
-# List Transfer
+# Initialize Homepage Stats
 def index(request):
 	'''
 	acc_bal = Preloader()
@@ -123,19 +122,23 @@ def disbursements(request):
 
 def single_disbursement_ajax(request):
 	if request.method == 'POST':
-		amount = int(request.POST['amount'])
+		amount = request.POST['amount']
 		recipient = str(request.POST.get('recipient'))
 		reason = str(request.POST.get('reason'))
 
+		#format_amount = "{:.0f}".format(float(amount*100))
+		format_amount = "{:.0f}".format(float(amount)*100)
+		format_amount = int(format_amount)
+
+		print(format_amount)
 		# Initiate Transfer
 		trans_obj = Transfers()
-		res = trans_obj.initate_transfer(amount,reason,recipient)
+		res = trans_obj.initate_transfer(format_amount,reason,recipient)
 
-		status = recipient_obj.get_request_status(res)
-
-		if not status[0]:
+		trans_status = trans_obj.get_request_status(res)
+		if not trans_status[0]:
 			return HttpResponse(
-				json.dumps({"error": "There was an error adding the supplier"}),
+				json.dumps({"error": trans_status[1]}),
 				content_type="application/json"
 				)
 		else:

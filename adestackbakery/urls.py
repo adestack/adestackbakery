@@ -15,7 +15,7 @@ urlpatterns = [
     path('suppliers/edit/<int:id>/', disbursement.views.edit_supplier, name='edit_supplier'),
     path('suppliers/delete/<int:id>/', disbursement.views.delete_supplier, name='delete_supplier'),
     path('disbursements/single', disbursement.views.single_disbursement, name='single_disbursement'),
-    path('disbursements/single_ajax', disbursement.views.single_disbursement, name='single_disbursement'),
+    path('disbursements/single_ajax', disbursement.views.single_disbursement_ajax, name='single_disbursement_ajax'),
     path('disbursements/bulk', disbursement.views.bulk_disbursements, name='bulk_disbursements'),
     path('admin/', admin.site.urls),
 ]
