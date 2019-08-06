@@ -1,5 +1,90 @@
 {% extends "base.html" %}
 {% load static %}
+{% block javascript %}  
+  <script src="{% static 'app-assets/vendors/js/extensions/sweetalert.min.js' %}" type="text/javascript"></script>
+  <script src="{% static 'app-assets/js/scripts/extensions/sweet-alerts.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
+   var result;
+
+    function deleteSupplier(id, name){
+      event.preventDefault();
+      swal({
+            title: "Delete Supplier",
+            text: "Are you sure you want to delete "+name+" from your suppliers?",
+            icon: "warning",
+            buttons: {
+                    cancel: {
+                        text: "No, cancel plx!",
+                        value: null,
+                        visible: true,
+                        className: "",
+                        closeModal: false,
+                    },
+                    confirm: {
+                        text: "Yes Proceed!!!",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: false
+                    }
+            }
+        }).then(isConfirm => {
+            if (isConfirm) {
+
+              var csrftoken = getCookie('csrftoken');  
+
+                    $.ajax({
+                      beforeSend: function(xhr, settings) {
+                          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                          }
+                      },
+                      url : "/suppliers/delete/"+id, // the endpoint
+                      //type : "POST", // http method
+                      //data : { description: $('#description').val(), bank_code: $('#bank_code').val(), account_number: $('#account_number').val(), name: $('#name').val() }, // data sent with the post request
+
+                      // handle a successful response
+                      success : function(json) {
+                          console.log(json);
+                          result = json;
+                          swal("Done!", "Supplier successfully deleted!!", "success").then(function() {
+                                // Redirect the user
+                                var return_url = $('#returnUrl').val();
+                                window.location.href = return_url;
+                                console.log('The Ok Button was clicked.');
+                              });
+                      }
+                  });
+
+            } else {
+                swal("Cancelled", "It's safe.", "error");
+            }
+        });
+    }
+
+    // using jQuery
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+</script>
+{% endblock %}
 {% block content %}
   <div class="app-content content">
     <div class="content-wrapper">
@@ -39,7 +124,6 @@
                 <div class="card-body">
                   <div class="text-right">
                     <p class="float-left">Use contextual classes to color table rows or individual cells.</p>
-                    <a type="link" class="btn btn-success btn-min-width mr-1 mb-1" href="{% url 'add_supplier' %}">Add Supplier</a>
                   </div>
                   <div class="table-responsive">
                     <table class="table table-bordered table-striped">
@@ -55,9 +139,12 @@
                         </tr>
                       </thead>
                       <tbody>
+                        <input type="hidden" value="{% url 'suppliers' %}" name="returnUrl" id="returnUrl">
                         {% for supplier in content %}
                           <tr>
-                            <td>{% if supplier.active == True %}<i class="fa fa-circle success"></i>{% else %}<i class="fa fa-circle danger"></i>{% endif%}</td>                            <td><small class="font-small-3">{{supplier.name}}</small></td>
+                            <td>
+                        {% if supplier.active == True %}<i class="fa fa-circle success"></i>{% else %}<i class="fa fa-circle danger"></i>{% endif%}</td>
+                            <td><small class="font-small-3" id="name">{{supplier.name}}</small></td>
                             <td><small class="font-small-3">{{supplier.recipient_code}}</small></td>
                             <td><div class="badge badge-pill badge-border border-success success font-small-3">{{supplier.type}}</div><small class="font-small-3">{{supplier.details.account_number}} {{supplier.details.bank_name}}</small></td>
                             <td>
@@ -68,7 +155,7 @@
                               {% endif%}
                             </td>
                             <td><small class="font-small-3">{{the_date|date:"N j, Y"}}</small></td>
-                            <td><div is="0" class="btn-group btn-group-sm" tabindex="0"><a href="#" class="text-muted" data-toggle="modal" data-target="#{{supplier.id}}"><i class="fa fa-pencil"></i></a><a href="{% url 'delete_supplier' supplier.id %}"class="text-danger"style="margin-left: 10px;"> <i class="fa fa-trash"></i></a></div></td>
+                            <td><div is="0" class="btn-group btn-group-sm" tabindex="0"><a href="#" class="text-muted" data-toggle="modal" data-target="#{{supplier.id}}"><i class="fa fa-pencil"></i></a><a class="text-danger delete_supplier" style="margin-left: 10px;" id="{{supplier.id}}" onclick="return deleteSupplier({{supplier.id}}, '{{supplier.name}}');"> <i class="fa fa-trash"></i></a></div></td>
                             <!-- Modal -->
                             <div class="modal fade text-left" id="{{supplier.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
                             aria-hidden="true">

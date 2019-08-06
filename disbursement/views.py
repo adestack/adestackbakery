@@ -187,9 +187,8 @@ def add_supplier_ajax(request):
 			content_type="application/json"
 			)
 
-
 def add_supplier(request):
-	
+
         # Fetch Banks
         util_obj = Utils()
         res = util_obj.fetch_banks()
@@ -201,8 +200,7 @@ def add_supplier(request):
         else:
                 context = {"content": res.json()["data"]}
                 return render(request,'add_supplier.html',context)
-
-        
+  
 def edit_supplier(request, id):
         if request.method == 'POST':
                 
@@ -222,6 +220,24 @@ def edit_supplier(request, id):
                         return redirect('suppliers')
 
 def delete_supplier(request, id):
+	# Delete Recipients
+	recipient_obj = Recipients()
+	req = recipient_obj.delete_recipient(id)
+
+	status = recipient_obj.get_request_status(req)
+
+	if not status[0]:
+		return HttpResponse(
+			json.dumps({"status":"success","error": "There was an error deleting the supplier!"}),
+			content_type="application/json"
+			)
+	else:
+		return HttpResponse(
+			json.dumps({"status":"success","success": "A supplier successfully delted!"}),
+			content_type="application/json"
+			)
+'''
+def delete_supplier(request, id):
 
         # Delete Recipients
         recipient_obj = Recipients()
@@ -233,3 +249,4 @@ def delete_supplier(request, id):
                 messages.success(request, ("Error Deleting Recipient!"))
         else:
                 return redirect('suppliers')
+'''
