@@ -51,7 +51,12 @@ $(document).ready(function(){
                           $('#description').val(''); // remove the value from the input
                           console.log(json)
                           result = json;
-                          swal("Added!", "Supplier successfully added!!", "success")
+                          swal("Added!", "Supplier successfully added!!", "success").then(function() {
+                                // Redirect the user
+                                var return_url = $('#returnUrl').val()
+                                window.location.href = return_url;
+                                console.log('The Ok Button was clicked.');
+                              });
                       }
                   });
 
@@ -60,42 +65,7 @@ $(document).ready(function(){
             }
         });
     }
-
-    /*function func_add_supplier(){
-        var csrftoken = getCookie('csrftoken');  
-
-        $.ajax({
-          beforeSend: function(xhr, settings) {
-              if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
-              }
-          },
-          url : "/suppliers/add_ajax", // the endpoint
-          type : "POST", // http method
-          data : { description: $('#description').val(), bank_code: $('#bank_code').val(), account_number: $('#account_number').val(), name: $('#name').val() }, // data sent with the post request
-
-          // handle a successful response
-          success : function(json) {
-              $('#name').val(''); // remove the value from the input
-              $('#account_number').val(''); // remove the value from the input
-              $('#bank_code').val(''); // remove the value from the input
-              $('#description').val(''); // remove the value from the input
-              console.log(json)
-              result = True;
-          },
-
-          // handle a non-successful response
-          error : function(xhr,errmsg,err) {
-              $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                  " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-              console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-              console.log(xhr.status)
-              result = False;
-          }
-      });
-      return result;
-    } */
-
+    
     // using jQuery
     function getCookie(name) {
         var cookieValue = null;

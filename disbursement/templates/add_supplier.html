@@ -53,15 +53,15 @@
                       <div class="form-body">
                         <div class="form-group">
                           <label for="eventRegInput1">Full Name</label>
-                          <input type="text" class="form-control" placeholder="Enter Supplier's Fullname" name="name" id="name">
+                          <input type="text" class="form-control" placeholder="Enter Supplier's Fullname" name="name" id="name" required>
                         </div>
                         <div class="form-group">
                           <label for="eventRegInput2">Account Number</label>
-                          <input type="text" class="form-control" placeholder="Enter Account Number" name="account_number" id="account_number">
+                          <input type="text" class="form-control" placeholder="Enter Account Number" name="account_number" id="account_number" required>
                         </div>
                         <div class="form-group">
                           <label for="eventRegInput3">Bank Name</label>
-                          <select class="select2-theme form-control" id="bank_code" name="bank_code">
+                          <select class="select2-theme form-control" id="bank_code" name="bank_code" required>
                             <option value="">Select Supplier's Bank</option> 
                             {% for bank in content %}
                                 <option value="{{bank.code}}">{{bank.name}}</option>

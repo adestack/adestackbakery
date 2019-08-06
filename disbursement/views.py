@@ -49,10 +49,40 @@ def disbursements(request):
                 context = {"content": res.json()["data"],"the_date":the_date}
                 print(context)
                 return render(request,'disbursements.html',context)
+
+def single_disbursement_ajax(request):
+	if request.method == 'POST':
+		amount = int(request.POST['amount'])
+		recipient = str(request.POST.get('recipient'))
+		reason = str(request.POST.get('reason'))
+
+		# Initiate Transfer
+		trans_obj = Transfers()
+		res = trans_obj.initate_transfer(amount,reason,recipient)
+
+		status = recipient_obj.get_request_status(res)
+
+		if not status[0]:
+			return HttpResponse(
+				json.dumps({"error": "There was an error adding the supplier"}),
+				content_type="application/json"
+				)
+		else:
+			response_data = {}
+			response_data['status'] = 'success'
+			response_data['success'] = 'Disbursements was successful!'
+
+			return HttpResponse(
+				json.dumps(response_data),
+				content_type="application/json"
+				)
+	else:
+		return HttpResponse(
+			json.dumps({"status":"fail","error": "Disbursements was unsuccessful!"}),
+			content_type="application/json"
+			)
         
 def single_disbursement(request):
-
-        print("I got here 1")
 
         if request.method == 'POST':
                 amount = int(request.POST['amount'])
@@ -236,17 +266,3 @@ def delete_supplier(request, id):
 			json.dumps({"status":"success","success": "A supplier successfully delted!"}),
 			content_type="application/json"
 			)
-'''
-def delete_supplier(request, id):
-
-        # Delete Recipients
-        recipient_obj = Recipients()
-        req = recipient_obj.delete_recipient(id)
-
-        status = recipient_obj.get_request_status(req)
-
-        if not status[0]:
-                messages.success(request, ("Error Deleting Recipient!"))
-        else:
-                return redirect('suppliers')
-'''
