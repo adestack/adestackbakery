@@ -93,7 +93,7 @@ class Base():
         data : Response as a requests.models.Response
         '''
 
-        return (data.json()["status"])
+        return (data.json()["status"], data.json()["message"])
 
 
     def build_request(self, data):
