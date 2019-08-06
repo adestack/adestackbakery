@@ -5,6 +5,7 @@ from adestackbakery.extras.transfers import Transfers
 from django.utils.dateparse import parse_datetime
 from django.contrib import messages
 from django.http import HttpResponse
+from adestackbakery.extras.preloader import Preloader
 import json
 
 #save 9:46#
@@ -13,7 +14,77 @@ import json
 
 # List Transfer
 def index(request):
-	return render(request,'index.html',{})
+	'''
+	acc_bal = Preloader()
+	res = acc_bal.fetch_balance()
+	'''
+
+	context = {}
+	
+	# Balance Enquiry
+	util_obj = Utils()
+	bal_res = util_obj.balance_enquiry()
+
+	status = util_obj.get_request_status(bal_res)
+
+	if not status[0]:
+		return False
+	else:
+		print(bal_res)
+
+		balance = int((bal_res.json()["data"][0]["balance"])/100)
+		currency = bal_res.json()["data"][0]["currency"]
+
+		current_balance = "{} {:,.2f}".format(currency,balance)
+
+		context["balance"] = current_balance
+
+	# Fetch Suppliers count
+	recipient_obj = Recipients()
+	sup_res = recipient_obj.list_recipients()
+	status_sup_res = util_obj.get_request_status(sup_res)
+
+	if not status_sup_res[0]:
+		return False
+	else:
+		supplier_count = len(sup_res.json()["data"])
+		print(supplier_count)
+		context["number_supplier"] = supplier_count
+
+	# Total No of Disbursements
+	trans_obj = Transfers()
+	total_res = trans_obj.list_transfers()
+	status_total_res = util_obj.get_request_status(total_res)
+
+	if not status_total_res[0]:
+		return False
+	else:
+		amount = 0
+		lista = total_res.json()["data"]
+		for item in lista:
+			amount += item['amount']
+			print(amount)
+
+		context["total_disbursements"] = "{} {:,.2f}".format("NGN",amount)
+
+	# List Transfer
+	list_trans_obj = Transfers()
+	list_trans_res = list_trans_obj.list_transfers()
+	#print(list_trans_res.json()["data"])
+	new_list = list_trans_res.json()["data"]
+	#print(new_list)
+	latest_five = new_list[:5]
+	print(latest_five)
+	status_list_trans = util_obj.get_request_status(total_res)
+
+	if not status_list_trans[0]:
+		return False
+	else:
+
+		context["latest_five"] =  latest_five
+		
+	
+	return render(request,'index.html',context)
 
 def balance(request):
 
@@ -84,43 +155,23 @@ def single_disbursement_ajax(request):
         
 def single_disbursement(request):
 
-        if request.method == 'POST':
-                amount = int(request.POST['amount'])
-                recipient = str(request.POST['recipient']).strip()
-                reason = request.POST['reason']
-                print("I got here 2")
-
-                # Initiate Transfer
-                trans_obj = Transfers()
-                res = trans_obj.initate_transfer(amount,reason,recipient)
-                print(res.json()["message"])
-                return redirect('disbursements')
-
-        print("I got here 3")
-
         #List recipients
         recipient_obj = Recipients()
         res = recipient_obj.list_recipients()
-        print("I got here 4")
 
         status = recipient_obj.get_request_status(res)
         # Check if the status of the balance enquiry call is true
-        
-        print("I got here 5")
 
         if not status[0]:
                 messages.success(request, ("Error Fetchingy Recipient Details!"))
 
-                print("I got here 6")
         else:
                 supplier_dic = {}
                 for supplier in res.json()["data"]:
                         supplier_dic.update( {supplier["recipient_code"]:supplier["name"]} )
 
-                        print("I got here 7")
                 context = {"suppliers":supplier_dic}
 
-                print("I got here 8")
                 return render(request,'single_disbursement.html',context)
 
 def bulk_disbursements(request):

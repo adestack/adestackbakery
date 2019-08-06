@@ -59,7 +59,7 @@
                             <td>{% if transfer.status == 'success' %}<i class="fa fa-circle success"></i>{% else %}<i class="fa fa-circle danger"></i>{% endif%}</td>
                             <td>{{transfer.currency}} {{transfer.amount}} to {{transfer.recipient.name}}</td>
                             <td>{{transfer.recipient.details.account_number}} {{transfer.recipient.details.bank_name}}</td>
-                            <td><div class="badge badge-pill badge-border border-success success">{{transfer.recipient.type}}</div>{{transfer.recipient.description}}</td>
+                            <td>{{transfer.recipient.description}}</td>
                             <td>{{the_date|date:"N j, Y"}}</td>
                             <td><button type="button" class="btn btn-outline-success block btn-sm" data-toggle="modal" data-target="#{{transfer.id}}">View Details</button></td>
                             <!-- Modal -->
@@ -102,7 +102,7 @@
                                               <div class="col-md-7">{{transfer.currency}} {{transfer.source}}</div>
                                           </li>
                                           <li class="list-group-item row">
-                                              <div class="col-md-8"><h5><small class="text-muted"><small class="text-bold-700">Notes:</small> {{transfer.recipient.description}}</small></h5</div>
+                                              <div class="col-md-8"><h5><small class="text-bold-700">Notes:</small><small class="text-muted"> {{transfer.recipient.description}}</small></h5></div>
                                               <div class="col-md-4"></div>
                                           </li>
                                       </ul>

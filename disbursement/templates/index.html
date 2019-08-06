@@ -19,7 +19,7 @@
                       </div>
                       <div class="media-body text-right">
                         <h3>BALANCE</h3>
-                        <h1>$76,456.00</h1>
+                        <h1>{{balance}}</h1>
                       </div>
                     </div>
                   </div>
@@ -32,7 +32,7 @@
                   <div class="card-body">
                     <div class="media d-flex">
                       <div class="media-body white text-left">
-                        <h3>156</h3>
+                        <h3>{{number_supplier}}</h3>
                         <h1>Suppliers</h1>
                       </div>
                       <div class="align-self-center">
@@ -52,7 +52,7 @@
                         <i class="icon-rocket white font-large-2 float-left"></i>
                       </div>
                       <div class="media-body white text-right">
-                        <h3>156</h3>
+                        <h3>{{total_disbursements}}</h3>
                         <h1>Disbursements</h1>
                       </div>
                     </div>
@@ -96,112 +96,20 @@
               </div>
               <div class="card-content px-1">
                 <div id="recent-buyers" class="media-list height-300 position-relative">
-                  <a href="#" class="media border-0">
-                    <div class="media-left pr-1">
-                      <span class="avatar avatar-md avatar-online">
-                        <img class="media-object rounded-circle" src="{% static 'app-assets/images/portrait/small/avatar-s-7.png' %}"
-                        alt="Generic placeholder image">
-                        <i></i>
-                      </span>
-                    </div>
-                    <div class="media-body w-100">
-                      <h6 class="list-group-item-heading">Kristopher Candy
-                        <span class="font-medium-4 float-right pt-1">$1,021</span>
-                      </h6>
-                      <p class="list-group-item-text mb-0">
-                        <span class="badge badge-primary">Electronics</span>
-                        <span class="badge badge-warning ml-1">Decor</span>
-                      </p>
-                    </div>
-                  </a>
-                  <a href="#" class="media border-0">
-                    <div class="media-left pr-1">
-                      <span class="avatar avatar-md avatar-away">
-                        <img class="media-object rounded-circle" src="{% static 'app-assets/images/portrait/small/avatar-s-8.png' %}"
-                        alt="Generic placeholder image">
-                        <i></i>
-                      </span>
-                    </div>
-                    <div class="media-body w-100">
-                      <h6 class="list-group-item-heading">Lawrence Fowler
-                        <span class="font-medium-4 float-right pt-1">$2,021</span>
-                      </h6>
-                      <p class="list-group-item-text mb-0">
-                        <span class="badge badge-danger">Appliances</span>
-                      </p>
-                    </div>
-                  </a>
-                  <a href="#" class="media border-0">
-                    <div class="media-left pr-1">
-                      <span class="avatar avatar-md avatar-busy">
-                        <img class="media-object rounded-circle" src="{% static 'app-assets/images/portrait/small/avatar-s-9.png' %}"
-                        alt="Generic placeholder image">
-                        <i></i>
-                      </span>
-                    </div>
-                    <div class="media-body w-100">
-                      <h6 class="list-group-item-heading">Linda Olson
-                        <span class="font-medium-4 float-right pt-1">$1,112</span>
-                      </h6>
-                      <p class="list-group-item-text mb-0">
-                        <span class="badge badge-primary">Electronics</span>
-                        <span class="badge badge-success ml-1">Office</span>
-                      </p>
-                    </div>
-                  </a>
-                  <a href="#" class="media border-0">
-                    <div class="media-left pr-1">
-                      <span class="avatar avatar-md avatar-online">
-                        <img class="media-object rounded-circle" src="{% static 'app-assets/images/portrait/small/avatar-s-10.png' %}"
-                        alt="Generic placeholder image">
-                        <i></i>
-                      </span>
-                    </div>
-                    <div class="media-body w-100">
-                      <h6 class="list-group-item-heading">Roy Clark
-                        <span class="font-medium-4 float-right pt-1">$2,815</span>
-                      </h6>
-                      <p class="list-group-item-text mb-0">
-                        <span class="badge badge-warning">Decor</span>
-                        <span class="badge badge-danger ml-1">Appliances</span>
-                      </p>
-                    </div>
-                  </a>
-                  <a href="#" class="media border-0">
-                    <div class="media-left pr-1">
-                      <span class="avatar avatar-md avatar-online">
-                        <img class="media-object rounded-circle" src="{% static 'app-assets/images/portrait/small/avatar-s-11.png' %}"
-                        alt="Generic placeholder image">
-                        <i></i>
-                      </span>
-                    </div>
-                    <div class="media-body w-100">
-                      <h6 class="list-group-item-heading">Kristopher Candy
-                        <span class="font-medium-4 float-right pt-1">$2,021</span>
-                      </h6>
-                      <p class="list-group-item-text mb-0">
-                        <span class="badge badge-primary">Electronics</span>
-                        <span class="badge badge-warning ml-1">Decor</span>
-                      </p>
-                    </div>
-                  </a>
-                  <a href="#" class="media border-0">
-                    <div class="media-left pr-1">
-                      <span class="avatar avatar-md avatar-away">
-                        <img class="media-object rounded-circle" src="{% static 'app-assets/images/portrait/small/avatar-s-12.png' %}"
-                        alt="Generic placeholder image">
-                        <i></i>
-                      </span>
-                    </div>
-                    <div class="media-body w-100">
-                      <h6 class="list-group-item-heading">Lawrence Fowler
-                        <span class="font-medium-4 float-right pt-1">$1,321</span>
-                      </h6>
-                      <p class="list-group-item-text mb-0">
-                        <span class="badge badge-danger">Appliances</span>
-                      </p>
-                    </div>
-                  </a>
+                  {% for trans in latest_five %}
+                    <a href="#" class="media border-0">
+                      <div class="media-body w-100">
+                        <h4 class="list-group-item-heading">{{trans.recipient.name}}
+                        </h4>
+                        <span class="font-medium-4 pt-1">{{trans.currency}}{{trans.amount}}</span>
+                        <p class="list-group-item-text mb-0">
+                          <span class="badge badge-primary">Account number: {{trans.recipient.details.account_number}}</span>
+                        </p>
+                      </div>
+                    </a>
+                    
+                  {% endfor %}
+
                 </div>
               </div>
             </div>
