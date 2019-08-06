@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load l10n %}
-{% load humanize %}
 {% block content %}
   <div class="app-content content">
     <div class="content-wrapper">
@@ -36,8 +34,10 @@
                      <i class="fa fa-user-circle-o fa-5x"></i>
                     </div>
                     <div class="card-body">
-                      <h4 class="card-title">Hello, Your available balance is {{ currency }} {% localize on %}{{ balance }}{% endlocalize %}</h4>
+                      <h4 class="card-title">Hello, Your available balance is {{ currency }} {{ balance }}</h4>
                       <p>To add money to your Paystack balance, you will need to use the <a href="https://paystack.helpscoutdocs.com/article/67-the-paystack-topup-feature">Paystack Topup Feature.</a></p>
+
+                    <b>Note: All amount displayed are in Kobo.</b>
                     </div>
                   </div>
                 </div>
